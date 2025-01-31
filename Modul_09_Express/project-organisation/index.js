@@ -1,11 +1,15 @@
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 
 import userRouter from './routers/users.js';
 import postRouter from './routers/posts.js';
 
 const app = express();
 const port = process.env.PORT || 8080;
+
+app.use(cors());
+
 app.use(express.json());
 
 // app.use(myMiddleware);

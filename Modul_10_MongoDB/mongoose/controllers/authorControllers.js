@@ -17,7 +17,7 @@ const getAuthors = async (req, res, next) => {
 const getAuthor = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const author = await Author.findById(id).lean();
+    const author = await Author.findById(id).populate('posts', 'title').lean();
     res.json({ author });
   } catch (error) {
     next(error);
@@ -25,9 +25,9 @@ const getAuthor = async (req, res, next) => {
 };
 
 const createAuthor = async (req, res, next) => {
-  const { email } = req.body;
+  const { email, firstName, lastName } = req.body;
   try {
-    const author = await Author.create({ email });
+    const author = await Author.create({ email, firstName, lastName });
     console.log(author);
     res.status(201).json({ author });
   } catch (error) {

@@ -28,6 +28,12 @@ const AuthorSchema = new Schema({
         'https://res.cloudinary.com/dvniua4ab/image/upload/c_crop,h_200,q_63,r_30,w_200/v1738597956/doh3dd3gliqihwvudapz.avif',
     },
   },
+  posts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'BlogPost',
+    },
+  ],
 });
 
 const Author = model('Author', AuthorSchema);

@@ -1,7 +1,7 @@
 import express from 'express';
 import dbInit from './db/init.js';
 import authorRouter from './routes/authorRoutes.js';
-// import blogPostRouter from './routes/blogPostRoutes.js';
+import blogPostRouter from './routes/blogPostRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/authors', authorRouter);
-// app.use('/blog', blogPostRouter);
+app.use('/blog', blogPostRouter);
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({ msg: err.message });

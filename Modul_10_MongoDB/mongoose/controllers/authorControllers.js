@@ -1,4 +1,5 @@
 import Author from '../schemas/Author.js';
+import BlogPost from '../schemas/BlogPost.js';
 
 // Get all authors
 const getAuthors = async (req, res, next) => {
@@ -63,4 +64,16 @@ const deleteAuthor = async (req, res, next) => {
   }
 };
 
-export { createAuthor, getAuthors, getAuthor, updateAuthor, deleteAuthor };
+const getAuthorsPostById = async (req, res, next) => {
+  const { authorID, postID } = req.params;
+  try {
+    const post = await Author.findById(authorID).select('posts');
+    // BlogPost.findById(postID)
+    if (!post) return res.status(404).json({ msg: 'Deletion failed, Author not found' });
+    res.json({ post });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { getAuthorsPostById, createAuthor, getAuthors, getAuthor, updateAuthor, deleteAuthor };

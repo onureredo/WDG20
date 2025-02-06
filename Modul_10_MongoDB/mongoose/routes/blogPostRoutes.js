@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
-import { createBlogPost, getSinglePost } from '../controllers/blogPostControllers.js';
+import { getPosts, createBlogPost, getSinglePost } from '../controllers/blogPostControllers.js';
 
 const blogPostRouter = Router();
 
+blogPostRouter.get('/', getPosts);
 blogPostRouter.get('/:id', getSinglePost);
 blogPostRouter.post('/', createBlogPost);
 

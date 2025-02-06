@@ -1,6 +1,22 @@
 import BlogPost from '../schemas/BlogPost.js';
 import Author from '../schemas/Author.js';
 
+const getPosts = async (req, res, next) => {
+  const { search, page } = req.query;
+  try {
+    let blogPosts;
+    if (search) {
+      blogPosts = await BlogPost.find({ $text: { $search: search } }).populate('author', 'firstName -_id images.thumb');
+    } else {
+      blogPosts = await BlogPost.find().populate('author', 'firstName -_id images.thumb');
+    }
+
+    res.json({ data: blogPosts });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getSinglePost = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -37,4 +53,4 @@ const createBlogPost = async (req, res) => {
   }
 };
 
-export { createBlogPost, getSinglePost };
+export { createBlogPost, getSinglePost, getPosts };

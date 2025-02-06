@@ -16,5 +16,7 @@ const blogPostSchema = new Schema({
   },
 });
 
+blogPostSchema.index({ title: 'text', content: 'text' });
+
 const BlogPost = model('BlogPost', blogPostSchema);
 export default BlogPost;

@@ -15,7 +15,7 @@ const readingObject = new Schema({
 const userSchema = new Schema({
   firstName: {
     type: String,
-    maxLength: [3, 'First name should be max 3 characters long.'],
+    maxLength: [50, 'First name too long. Max 50 characters.'],
   },
   lastName: String,
   readingList: [readingObject],

@@ -6,6 +6,7 @@ import errorHandler from './utils/errorHandler.js';
 import ErrorResponse from './utils/ErrorResponse.js';
 
 import userRouter from './routes/userRouter.js';
+import bookRouter from './routes/bookRouter.js';
 
 const app = express();
 
@@ -18,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 
 app.use('/users', userRouter);
-// app.use('/books', bookRouter);
+app.use('/books', bookRouter);
 
 app.use('*', (req, res, next) => {
   next(new ErrorResponse(`Cannot find ${req.originalUrl}`, 404));

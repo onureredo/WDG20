@@ -4,6 +4,7 @@ const readingObject = new Schema({
   bookRefId: {
     type: Schema.Types.ObjectId,
     ref: 'Book',
+    unique: true,
   },
   status: {
     type: String,

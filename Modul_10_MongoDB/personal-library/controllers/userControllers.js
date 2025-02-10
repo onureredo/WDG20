@@ -40,8 +40,22 @@ const addBookToReadingList = asyncHandler(async (req, res, next) => {
   const bookExists = await BookModel.exists({ _id: bookRefId });
   if (!bookExists) throw new ErrorResponse('Book not found', 404);
 
-  const user = await UserModel.findByIdAndUpdate(
-    id,
+  // const user = await UserModel.findByIdAndUpdate(
+  //   id,
+  //   {
+  //     $addToSet: {
+  //       readingList: {
+  //         bookRefId,
+  //         status: 'not read',
+  //       },
+  //     },
+  //   },
+  //   { new: true, runValidators: true }
+  // );
+
+  // Um sicher zu gehen, dass das Buch nicht schon in der Liste ist, reicht ein einfaches $addToSet nicht aus. Jeder Eintrag in der readingList ist ein eigenen Object mit eigener _id. Also müssen wir im Filter sicherstellen, dass die bookRefId nicht unserem Input entspricht ($ne - not equal)
+  const user = await UserModel.findOneAndUpdate(
+    { _id: id, 'readingList.bookRefId': { $ne: bookRefId } }, // Filter
     {
       $addToSet: {
         readingList: {
@@ -51,7 +65,7 @@ const addBookToReadingList = asyncHandler(async (req, res, next) => {
     },
     { new: true, runValidators: true }
   );
-  if (!user) throw new ErrorResponse('User not found', 404);
+  if (!user) throw new ErrorResponse('Book already in List', 409);
 
   res.json({ data: 'Add book to reading list', data: user });
 });

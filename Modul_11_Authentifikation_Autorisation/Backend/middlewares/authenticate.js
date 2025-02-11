@@ -14,7 +14,7 @@ export default async function authenticate(req, res, next) {
 
   try {
     const { userId } = jwt.verify(token, process.env.SECRET);
-    const user = await UserModel.findById(userId).select('email');
+    const user = await UserModel.findById(userId).select('email role');
     if (!user) return next(new ErrorResponse('Not Authenticated', 401));
 
     req.user = user;

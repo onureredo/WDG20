@@ -34,6 +34,11 @@ const userSchema = new Schema({
     required: [true, 'Please provide an email'],
     match: [emailRegex, 'Email not valid'],
   },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'author'],
+    default: 'user',
+  },
 });
 
 const UserModel = model('User', userSchema);

@@ -10,23 +10,25 @@ import { userSignup, userLogin, userLogout, getMe } from '../controllers/authCon
 import authenticate from '../middlewares/authenticate.js';
 
 import UserModel from '../models/UserModel.js';
+import hasPermissions from '../middlewares/hasPermissions.js';
 
 const userRouter = Router();
+
+const restricted = [authenticate, hasPermissions('self', 'admin')];
 
 userRouter.post('/signup', userSignup);
 userRouter.post('/login', userLogin);
 userRouter.post('/logout', userLogout);
-userRouter.get('/me', authenticate, getMe);
+userRouter.get('/me/:id', restricted, getMe);
 
 userRouter.get('/', getAll(UserModel));
-// userRouter.get('/:id', getOneById(UserModel));
-userRouter.get('/:id', authenticate, getUserById);
+userRouter.get('/:id', restricted, getUserById);
 // userRouter.post('/', createOne(UserModel));
-userRouter.put('/:id', updateOne(UserModel));
-userRouter.delete('/:id', deleteOne(UserModel));
+userRouter.put('/:id', restricted, updateOne(UserModel));
+userRouter.delete('/:id', restricted, deleteOne(UserModel));
 
-userRouter.post('/:id/books', addBookToReadingList);
-userRouter.put('/:id/books/:bookID', updateBookStatus);
-userRouter.delete('/:id/books/:bookID', deleteFromReadingList);
+userRouter.post('/:id/books', restricted, addBookToReadingList);
+userRouter.put('/:id/books/:bookID', restricted, updateBookStatus);
+userRouter.delete('/:id/books/:bookID', restricted, deleteFromReadingList);
 
 export default userRouter;

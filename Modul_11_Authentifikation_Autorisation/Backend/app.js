@@ -7,6 +7,7 @@ import ErrorResponse from './utils/ErrorResponse.js';
 
 import userRouter from './routes/userRouter.js';
 import bookRouter from './routes/bookRouter.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -17,6 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/users', userRouter);
 app.use('/books', bookRouter);

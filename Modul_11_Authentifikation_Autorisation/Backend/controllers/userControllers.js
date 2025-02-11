@@ -10,9 +10,10 @@ const getAllUsers = asyncHandler(async (req, res, next) => {
 
 const getUserById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
+
   const user = await UserModel.findById(id).populate('readingList.bookRefId', 'title author description ').lean();
   if (!user) throw new ErrorResponse('User not found', 404);
-  res.json({ data: user });
+  res.json({ data: user, 'req.user': req.user });
 });
 
 const createUser = asyncHandler(async (req, res, next) => {

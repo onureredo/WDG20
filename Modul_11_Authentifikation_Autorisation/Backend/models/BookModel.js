@@ -39,7 +39,7 @@ const bookSchema = new Schema({
 
 bookSchema.index({ title: 'text', author: 'text', description: 'text' });
 
-// Das hier ist "post-save hook", eine Middleware, die läudt, nachdem ein neues Buch gespeichert wurde. Die Fehlermeldung für den `unique` constraint lässt sich nur nach dem gescheiterten Speicherversuch anpassen.
+// Das hier ist ein "post-save hook", eine Middleware, die ausgeführt wird, nachdem ein neues Buch gespeichert wurde. Die Fehlermeldung für den `unique` constraint lässt sich nur nach dem gescheiterten Speicherversuch anpassen.
 bookSchema.post('save', function (error, doc, next) {
   if (error.name === 'MongoServerError' && error.code === 11000) {
     next(new ErrorResponse(`A Book with this ISBN (${doc.isbn}) already exists.`, 409));

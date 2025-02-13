@@ -11,7 +11,12 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:5173', 'http://localhost:5172', 'https://deployed-site.com'],
+  })
+);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));

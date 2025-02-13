@@ -41,7 +41,7 @@ const userLogin = asyncHandler(async (req, res) => {
 
 const userLogout = (req, res) => {
   res.clearCookie('token');
-  res.json({ msf: 'Logout successful' });
+  res.json({ msg: 'Logout successful' });
 };
 
 const getMe = (req, res) => {

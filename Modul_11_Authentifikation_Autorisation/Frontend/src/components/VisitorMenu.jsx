@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
 const VisitorMenu = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
+
+  const { login } = useContext(AuthContext);
 
   const handleInput = (e) => setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('LOGIN FN NOT IMPLEMENTED');
+    const success = login(formState);
+    success && document.getElementById('my_modal_1').close();
   };
 
   return (

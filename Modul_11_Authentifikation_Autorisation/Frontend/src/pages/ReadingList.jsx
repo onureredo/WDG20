@@ -1,20 +1,36 @@
 import { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { ToasterContext } from '../contexts/ToasterContext';
+import { AuthContext } from '../contexts/AuthContext';
 
 const bookStatus = ['read', 'pending', 'lend', 'not read', 'lost', 'on wishlist'];
 
 const ReadingList = () => {
   const { toaster } = useContext(ToasterContext);
+  const { user } = useContext(AuthContext);
   const [books, setBooks] = useState(null);
 
   useEffect(() => {
     const fetchReadingList = async () => {
-      toaster.error('Not implemented');
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`http://localhost:8901/users/${user._id}`, {
+          // credentials: 'include',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.msg);
+        setBooks(data.data.readingList);
+      } catch (error) {
+        console.error(error);
+        toaster.error(`Failed to get your Reading List`);
+      }
     };
 
     fetchReadingList();
-  }, [toaster]);
+  }, [toaster, user._id]);
 
   const handleChange = async (e, bookId, title) => {
     const newStatus = e.target.value;
@@ -22,7 +38,19 @@ const ReadingList = () => {
     setBooks(updatedBooks);
 
     try {
-      toaster.error('Not implemented');
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:8901/users/${user._id}/books/${bookId}`, {
+        method: 'PUT',
+        // credentials: 'include',
+        body: JSON.stringify({ status: newStatus }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.msg);
+      toaster.success(`Changed ${title} to ${newStatus}`);
     } catch {
       setBooks(books);
       toaster.error(`Failed to change ${title} to ${newStatus}`);

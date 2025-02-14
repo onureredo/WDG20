@@ -11,10 +11,15 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5172', 'https://personal-library-3k8z.onrender.com'];
+
 app.use(
   cors({
+    origin: (origin, cb) => {
+      if (!origin || allowedOrigins.includes(origin)) cb(null, true);
+      else cb(new Error('Not allowed by CORS'));
+    },
     credentials: true,
-    origin: ['http://localhost:5173', 'http://localhost:5172', 'https://deployed-site.com'],
   })
 );
 

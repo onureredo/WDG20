@@ -19,7 +19,7 @@ const restricted = [authenticate, hasPermissions('self', 'admin')];
 userRouter.post('/signup', userSignup);
 userRouter.post('/login', userLogin);
 userRouter.post('/logout', userLogout);
-userRouter.get('/me/:id', restricted, getMe);
+userRouter.get('/me', authenticate, getMe);
 
 userRouter.get('/', getAll(UserModel));
 userRouter.get('/:id', restricted, getUserById);

@@ -2,7 +2,6 @@ import UserModel from '../models/UserModel.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import ErrorResponse from '../utils/ErrorResponse.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import signToken from '../utils/signToken.js';
 import setAuthCookie from '../utils/setAuthCookie.js';
 
